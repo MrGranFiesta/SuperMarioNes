@@ -1,17 +1,18 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
-[RequireComponent(typeof(Collider2D), typeof(SpriteRenderer), typeof(Animator))]
+[RequireComponent(typeof(Collider2D))]
+[RequireComponent(typeof(SpriteRenderer))]
+[RequireComponent(typeof(Animator))]
 public abstract class BlockBase : MonoBehaviour, IHittable
 {
     protected float OffsetY = 0.3f;
-    protected float Velocity = 6f;
 
     protected Vector3 OriginTarget;
     protected Vector3 PositionTarget;
-    protected bool IsActive = false;
+    protected bool IsActiveAnim = false;
+    protected bool IsDisableOnHit = false;
 
     protected Collider2D Col;
     protected SpriteRenderer Sprite;
@@ -39,16 +40,14 @@ public abstract class BlockBase : MonoBehaviour, IHittable
         bool isLastHit = false
     )
     {
-        if (!IsActive)
+        if (IsActiveAnim) { return; }
+
+        IsActiveAnim = true;
+        if (isLastHit)
         {
-            IsActive = true;
-            if (isLastHit)
-            {
-                Animator.SetBool(AnimationConst.IsHit, true);
-            }
-            StartCoroutine(HitAnimation());
-            IsActive = false;
+            Animator.SetBool(AnimationConst.IsHit, true);
         }
+        StartCoroutine(HitAnimation());
     }
 
     private IEnumerator HitAnimation()
@@ -64,15 +63,15 @@ public abstract class BlockBase : MonoBehaviour, IHittable
             MoveTowards(OriginTarget);
             yield return null;
         }
+        IsActiveAnim = false;
     }
 
     private void MoveTowards(Vector3 posTarget)
     {
-        AnimationUtils.MoveTowards(
-            gameObject,
+        transform.position = Vector3.MoveTowards(
             transform.position,
             posTarget,
-            Velocity
+            GameConstants.BlockVelocityAnim * Time.deltaTime
         );
     }
 
@@ -81,7 +80,7 @@ public abstract class BlockBase : MonoBehaviour, IHittable
         GameObject go = ResourceManager.GetCoinAnimation();
         Vector3 spawnPos = new Vector3(
             transform.position.x,
-            Col.bounds.max.y + Col.bounds.size.x / 1.5f,
+            Col.bounds.max.y,
             transform.position.z
         );
         GameObject coin = Instantiate(go, spawnPos, Quaternion.identity);
@@ -91,6 +90,7 @@ public abstract class BlockBase : MonoBehaviour, IHittable
 
     protected void GeneratePowerUp(PowerUp content)
     {
+        SoundConst.Item.Play();
         GameObject go = ResourceManager.GetPrefabItem(content);
         Vector3 spawnPos = new Vector3(
             transform.position.x ,

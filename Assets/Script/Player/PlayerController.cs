@@ -1,16 +1,18 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(SpriteRenderer))]
 [RequireComponent(typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(PlayerInput))]
 public class PlayerController : MonoBehaviour
 {
     private bool _isGrounded = false;
     private LayerMask _layerMask;
 
-    private float _jumpForce = 6;
-    private float _moveForce = 0.5f;
+    private float _jumpForce = GameConstants.JumpForcePlayer;
+    private float _moveForce = GameConstants.MoveForcePlayer;
     private float _rayDistance = 0.1f;
 
 
@@ -23,13 +25,16 @@ public class PlayerController : MonoBehaviour
 
     private PlayerStatus _status;
 
-    private float _fireCooldown = 0.7f;
+    private float _fireCooldown = GameConstants.CooldownDisableFire;
     private float _lastFireTime = -10f;
-    private const int MaxVelocityX = 15;
-    private const int MaxVelocityY = 20;
+    private const int MaxVelocityX = GameConstants.MaxVelocityXPlayer;
+    private const int MaxVelocityY = GameConstants.MaxVelocityYPlayer;
+
+    private bool isDeath = false;
 
     void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         InitialiceComponentes();
         InitializeData();
         CreateListener();
@@ -101,6 +106,10 @@ public class PlayerController : MonoBehaviour
 
         InputManager.InputActions.Player.Jump.performed += HandleJump;
         InputManager.InputActions.Player.LaunchedFire.performed += LaunchedFire;
+        MainClass.CustomEvents.OnPlayerDestroy.AddListener(() =>
+        {
+            Destroy(gameObject);
+        });
     }
 
     private void UpdateSpriteRendererByStatus()
@@ -125,8 +134,9 @@ public class PlayerController : MonoBehaviour
         while (Time.time < vulnerabilityCooldown)
         {
             _spriteRenderer.enabled = !_spriteRenderer.enabled;
-            yield return new WaitForSeconds(0.10f);
+            yield return new WaitForSeconds(GameConstants.BlinkingAnimBySecond);
         }
+        _spriteRenderer.enabled = true;
         MainClass.Player.SetIsVulnerable(false);
     }
 
@@ -183,12 +193,42 @@ public class PlayerController : MonoBehaviour
         RotationPlayer();
     }
 
-    public void HandleJump(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    public void HandleJump(InputAction.CallbackContext context)
     {
-        if (_isGrounded)
+        if (_isGrounded && !isDeath)
         {
-            _rig.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+            if (PlayerStatus.Small == MainClass.Player.Status)
+            {
+                SoundConst.JumpSmall.Play();
+            } else
+            {
+                SoundConst.Jump.Play();
+
+            }
+            _rig.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse); 
         }
+    }
+
+    public void DeathPlayer()
+    {
+        if (isDeath) { return; }
+        isDeath = true;
+        MainClass.Player.MinusLive();
+        if (MainClass.Player.Status == PlayerStatus.Small) {
+            _animator.SetTrigger(AnimationConst.OnDeath);
+            InputManager.InputActions.Disable();
+            gameObject.layer = LayerMask.NameToLayer(LayerUtils.Inactive);
+        }
+        SoundConst.Death.Play();
+        StartCoroutine(DestroyDelay());
+    }
+
+
+    private IEnumerator DestroyDelay()
+    {
+        yield return new WaitForSeconds(GameConstants.DelayPlayerDeath);
+        MainClass.CustomEvents.OnPlayerDeath.Invoke();
+        Destroy(gameObject);
     }
 
     private void OnChangeStatusAnimation(PlayerStatus newStatus)
@@ -226,11 +266,11 @@ public class PlayerController : MonoBehaviour
 
     private IEnumerator TimeInvulnerability()
     {
-        yield return new WaitForSeconds(7f);
+        yield return new WaitForSeconds(GameConstants.TimeInvulnerabiliy);
         MainClass.Player.SetIsInvincible(false);
     }
 
-    private void LaunchedFire(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    private void LaunchedFire(InputAction.CallbackContext context)
     {
         if (_status != PlayerStatus.Fire) { return; }
 
@@ -263,8 +303,14 @@ public class PlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(TagsUtils.IsEnemy(collision.gameObject) && MainClass.Player.IsInvincible) { 
-            //Todo Anim
+            SoundConst.KickKill.Play();
             Destroy(collision.gameObject);
         }
+    }
+
+    private void OnDestroy()
+    {
+        InputManager.InputActions.Player.Jump.performed -= HandleJump;
+        InputManager.InputActions.Player.LaunchedFire.performed -= LaunchedFire;
     }
 }

@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InvisibleBlock : QuestionBlock
@@ -12,7 +10,7 @@ public class InvisibleBlock : QuestionBlock
     }
 
     public override void OnHit()
-    {
+    {   
         Col.isTrigger = false;
         _sprite.enabled = true;
         base.OnHit();

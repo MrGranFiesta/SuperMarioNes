@@ -1,0 +1,60 @@
+{
+	"Translations": [
+		{
+			"Key": "_play",
+			"Value": "Play"
+		},
+		{
+			"Key": "_config",
+			"Value": "Config"
+		},
+		{
+			"Key": "_points",
+			"Value": "Points"
+		},
+		{
+			"Key": "_dificult",
+			"Value": "Dificult"
+		},
+		{
+			"Key": "_easy",
+			"Value": "Easy"
+		},
+		{
+			"Key": "_medium",
+			"Value": "Medium"
+		},
+		{
+			"Key": "_hard",
+			"Value": "Hard"
+		},
+		{
+			"Key": "_languaje",
+			"Value": "Languaje"
+		},
+		{
+			"Key": "_es",
+			"Value": "Spanish"
+		},
+		{
+			"Key": "_in",
+			"Value": "English"
+		},
+		{
+			"Key": "_back",
+			"Value": "Back"
+		},
+		{
+			"Key": "_time",
+			"Value": "Time"
+		},
+		{
+			"Key": "_world",
+			"Value": "World"
+		},
+		{
+			"Key": "_pause",
+			"Value": "Pause"
+		}
+	]
+}

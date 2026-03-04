@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -20,12 +19,14 @@ public class KoopaHeaderController : MonoBehaviour, IStompable
     {
         if (_koopaController.Status.IsWalking())
         {
+            SoundConst.Stompswim.Play();
             OnChangeStatus.Invoke(KoopaStatus.ShieldInvulnerableState);
             _animator.SetTrigger(AnimationConst.OnStomp);
             _koopaController.StopMove();
             StartCoroutine(WaitTryGetUp());
         }
         else if(_koopaController.Status.IsShieldNotInvulnerable() && _koopaController.isMove) {
+            SoundConst.Stompswim.Play();
             StopAllCoroutines();
             CancelTryGetUp(KoopaStatus.ShieldInvulnerableState);
 
@@ -33,6 +34,7 @@ public class KoopaHeaderController : MonoBehaviour, IStompable
             StartCoroutine(WaitTryGetUp());
         } 
         else if (_koopaController.Status.IsShieldNotInvulnerable() && !_koopaController.isMove) {
+            SoundConst.KickKill.Play();
             StopAllCoroutines();
             CancelTryGetUp(KoopaStatus.ShieldState);
 
@@ -50,12 +52,12 @@ public class KoopaHeaderController : MonoBehaviour, IStompable
 
     private IEnumerator WaitTryGetUp()
     {
-        yield return new WaitForSeconds(0.2f);
+        yield return new WaitForSeconds(GameConstants.DelayInvulnerability);
         OnChangeStatus.Invoke(KoopaStatus.ShieldState);
-        yield return new WaitForSeconds(4);
+        yield return new WaitForSeconds(GameConstants.DelayTryGetUpState);
         OnChangeStatus.Invoke(KoopaStatus.ShieldTryGetUpState);
         _animator.SetTrigger(AnimationConst.OnTryGetUp);
-        yield return new WaitForSeconds(3);
+        yield return new WaitForSeconds(GameConstants.DelayGetUp);
         _animator.SetTrigger(AnimationConst.OnGetUp);
         _koopaController.PlayMove();
         OnChangeStatus.Invoke(KoopaStatus.WalkingState);

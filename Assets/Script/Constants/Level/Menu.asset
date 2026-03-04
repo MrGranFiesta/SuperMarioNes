@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Menu
   m_EditorClassIdentifier: 
   _sceneName: Menu
+  _soundtrack: {fileID: 8300000, guid: 9df6c4cd3f4d5104bb2de90b9e70436d, type: 3}
+  id: 1

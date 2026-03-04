@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PointsUtils
 {
     public const int Coin = 200;
@@ -44,12 +40,7 @@ public class PointsUtils
     }
 
     //Meta
-    public const int Meta6 = 5000;
-    public const int Meta5 = 4000;
-    public const int Meta4 = 2000;
-    public const int Meta3 = 800;
-    public const int Meta2 = 400;
-    public const int Meta1 = 100;
+    public const int Meta = 5000;
 
     //Time
     public const int SecondPoint = 50;

@@ -1,20 +1,60 @@
 {
-	"translations": [
+	"Translations": [
 		{
-			"key": "_title",
-			"value": "Ejemplo de aplicación"
+			"Key": "_play",
+			"Value": "Jugar"
 		},
 		{
-			"key": "_information",
-			"value": "<style=\"H1\">Bienvenido al <color=#3498db>i18n Testing Lab</color></style>\n\nEsta es una aplicación diseñada para validar el <b text-transform:uppercase>sistema de localización reactivo</b>. \n\n<indent=5%>- <b>Mecánica:</b> En tiempo de ejecución, el usuario puede conmutar el idioma mediante un sistema de <sprite name=\"event_icon\"> <b>Eventos Globales</b>.\n- <b>Reactividad:</b> Al cambiar el idioma, se lanza una notificación que indica a cada componente <color=#e74c3c><smallcaps>Translatable</smallcaps></color> que debe refrescar su contenido automáticamente.</indent>\n\n<line-height=125%><i>¡Prueba a pulsar los botones inferiores para ver la magia del desacoplamiento en Unity!</i></line-height>"
+			"Key": "_config",
+			"Value": "Configuracion"
 		},
 		{
-			"key": "_es",
-			"value": "Español"
+			"Key": "_points",
+			"Value": "Puntos"
 		},
 		{
-			"key": "_en",
-			"value": "Inglés"
+			"Key": "_dificult",
+			"Value": "Dificultad"
+		},
+		{
+			"Key": "_easy",
+			"Value": "Facil"
+		},
+		{
+			"Key": "_medium",
+			"Value": "Medio"
+		},
+		{
+			"Key": "_hard",
+			"Value": "Dificil"
+		},
+		{
+			"Key": "_languaje",
+			"Value": "Lenjuage"
+		},
+		{
+			"Key": "_es",
+			"Value": "Español"
+		},
+		{
+			"Key": "_in",
+			"Value": "Ingles"
+		},
+		{
+			"Key": "_back",
+			"Value": "Volver"
+		},
+		{
+			"Key": "_time",
+			"Value": "Tiempo"
+		},
+		{
+			"Key": "_world",
+			"Value": "Mundo"
+		},
+		{
+			"Key": "_pause",
+			"Value": "Pausa"
 		}
 	]
 }

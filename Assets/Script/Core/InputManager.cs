@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class InputManager
@@ -13,7 +10,7 @@ public class InputManager
             if (_inputActions == null)
             {
                 _inputActions = new PlayerInputAction();
-                _inputActions.Player.Enable();
+                _inputActions.UI.Enable();
             }
 
             return _inputActions;

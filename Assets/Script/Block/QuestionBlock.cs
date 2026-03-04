@@ -12,6 +12,13 @@ public class QuestionBlock : BlockBase
 
     public override void OnHit()
     {
+        if (IsDisableOnHit)
+        {
+            SoundConst.Bump.Play();
+            return;
+        }
+        IsDisableOnHit = true;
+
         if (_isActived) return;
         _isActived = true;
 
@@ -22,7 +29,7 @@ public class QuestionBlock : BlockBase
                 LaunchCoinAnimation();
                 break;
             case BlockTypeModeQuestion.PowerUpAuto:
-                GeneratePowerUp(PlayerUtils.GeneratePowerUpByPlayer(MainClass.Player.Status));
+                GeneratePowerUp(PlayerUtils.GeneratePowerUpByPlayer());
                 break;
             case BlockTypeModeQuestion.PowerUpSpecific:
                 GeneratePowerUp(_content);

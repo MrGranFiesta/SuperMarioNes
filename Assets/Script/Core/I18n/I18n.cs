@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -7,8 +6,12 @@ public class I18n
 {
     private Dictionary<string, string> _translationsDictionary = new Dictionary<string, string>();
 
-    public I18n(string language = LanguajesCode.Es)
+    public I18n(string language = "")
     {
+        if (string.IsNullOrEmpty(language))
+        {
+            language = LanguajeCode.ES.code;
+        }
         ChangeLanguage(language);
     }
 
@@ -19,14 +22,13 @@ public class I18n
         // Si el archivo no existe, evitamos el crash
         if (contentJson == null)
         {
-            //Debug.LogError($"[i18n] No se encontró el archivo de idioma: Resources/i18n/{language}");
+            Debug.LogError($"[i18n] No se encontró el archivo de idioma: Resources/i18n/{language}");
             return;
         }
 
         try
         {
             TranslationsDTO translationsDTO = JsonUtility.FromJson<TranslationsDTO>(contentJson.text);
-
             if (translationsDTO != null && translationsDTO.Translations != null)
             {
                 _translationsDictionary = ConvertToDictionary(translationsDTO.Translations);
@@ -35,7 +37,7 @@ public class I18n
         }
         catch (Exception e)
         {
-            //Debug.LogError($"[i18n] Error al parsear el JSON de idioma: {e.Message}");
+            Debug.LogError($"[i18n] Error al parsear el JSON de idioma: {e.Message}");
         }
     }
 
@@ -63,7 +65,6 @@ public class I18n
         {
             return key;
         }
-
         return value;
     }
 }

@@ -9,8 +9,14 @@ public class PointUIController : MonoBehaviour
     private void Awake()
     {
         txt = GetComponent<TextMeshProUGUI>();
+        FormatedTxt(MainClass.Player.Points);
         MainClass.CustomEvents.OnPointsChanged.AddListener((points) => {
-            txt.text = points.ToString("000000");
+            FormatedTxt(points);
         });
+    }
+
+    private void FormatedTxt(int points)
+    {
+        txt.text = points.ToString("000000");
     }
 }

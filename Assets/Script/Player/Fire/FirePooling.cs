@@ -1,10 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FirePooling : MonoBehaviour
 {
-    private int _pollSize = 3;
+    private int _pollSize = GameConstants.FirePoolingStarted;
     private List<GameObject> _listFired = new List<GameObject>();
 
     private static FirePooling _instance;
@@ -42,13 +41,13 @@ public class FirePooling : MonoBehaviour
         Vector3 position,
         int direction
         ) {
+        SoundConst.FireBall.Play();
         for (int i = 0; i < _listFired.Count; i++) {
             GameObject fire = _listFired[i];
             if (!fire.activeSelf) {
                 fire.SetActive(true);
                 fire.transform.position = position;
                 fire.GetComponent<FireController>().SetDirectionX(direction);
-                //TODO Conf Direction
                 return fire;
             }
         }
@@ -56,7 +55,6 @@ public class FirePooling : MonoBehaviour
         GameObject lastFire = _listFired[_listFired.Count -1];
         lastFire.SetActive(true);
         lastFire.transform.position = position;
-        //TODO Conf Direction
         return lastFire;
     }
 }

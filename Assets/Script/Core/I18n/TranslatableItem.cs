@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -11,7 +9,7 @@ public class TranslatableItem : MonoBehaviour
 
     private void Awake()
     {
-        this._text = GetComponent<TextMeshProUGUI>();
+        _text = GetComponent<TextMeshProUGUI>();
 
         // Nos suscribimos al evento de cambio de idioma.
         // Al usar UnityEvents, cada vez que se invoque 'OnLanguageChanged', 
@@ -30,8 +28,8 @@ public class TranslatableItem : MonoBehaviour
     void UpdateText()
     {
         if (_text == null) return;
-
         string translatedValue = MainClass.I18n.Get(this._key);
+        _text.text = translatedValue;
     }
 
     private void OnDestroy()

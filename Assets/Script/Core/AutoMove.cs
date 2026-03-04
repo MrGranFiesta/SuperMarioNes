@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D), typeof(SpriteRenderer))]
@@ -7,11 +5,11 @@ public abstract class AutoMove : MonoBehaviour
 {
     private Rigidbody2D _rig;
     protected SpriteRenderer _spriteRenderer;
- 
-    [SerializeField] protected float _speed = 3f;
+
+    protected float _speed = GameConstants.VelocityXAutomove;
     protected float _direction { get; set; } = 1f;
 
-    [SerializeField] private float _rayDistance = 0.7f;
+    private float _rayDistance = 0.7f;
     private float _rayOffset = 0.25f;
 
     [SerializeField] protected LayerMask _layerMask;
@@ -30,7 +28,6 @@ public abstract class AutoMove : MonoBehaviour
 
     protected virtual void FixedUpdate()
     {
-        Debug.Log("isMove " + isMove + " " + _direction + " " + _speed);
         if (isMove)
         {
             _rig.velocity = new Vector2(_direction * _speed, _rig.velocity.y);
@@ -39,15 +36,7 @@ public abstract class AutoMove : MonoBehaviour
 
     protected virtual void Update()
     {
-        Vector2 directionRay = Vector2.zero;
-        if (_direction == 1f)
-        {
-            directionRay = Vector2.right;
-        }
-        else if (_direction == -1f)
-        {
-            directionRay = Vector2.left;
-        }
+        Vector2 directionRay = GetDirectionRayByDirection();
 
         RaycastHit2D hitLeft = Physics2D.Raycast(
                 GetCenterPosition(),
@@ -56,12 +45,26 @@ public abstract class AutoMove : MonoBehaviour
                 _layerMask
         );
 
-        Debug.DrawRay(GetCenterPosition(), directionRay * _rayDistance, Color.red);
+        //Debug.DrawRay(GetCenterPosition(), directionRay * _rayDistance, Color.red);
 
         if (hitLeft.collider != null)
         {
             Rotate();
         }
+    }
+
+    private Vector2 GetDirectionRayByDirection()
+    {
+        if (_direction == 1f)
+        {
+            return Vector2.right;
+        }
+        else if (_direction == -1f)
+        {
+            return Vector2.left;
+        }
+
+        return Vector2.zero;
     }
 
     public virtual void StopMove()

@@ -58,9 +58,4 @@ public class StompController : MonoBehaviour
             stompable.OnStomp();
         }
     }
-
-    private void GetPointByCombo()
-    {
-
-    }
 }

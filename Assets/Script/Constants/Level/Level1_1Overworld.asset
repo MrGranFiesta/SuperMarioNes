@@ -13,3 +13,5 @@ MonoBehaviour:
   m_Name: Level1_1Overworld
   m_EditorClassIdentifier: 
   _sceneName: Level1_1Overworld
+  _soundtrack: {fileID: 8300000, guid: d6b2d3962e4615c49a76a1722b2ef6ec, type: 3}
+  id: 2

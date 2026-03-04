@@ -14,5 +14,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Level1_1Overworld.unity
     guid: eb62aa4f12a25064c87646849ba67ca4
+  - enabled: 1
+    path: Assets/Scenes/GameOver.unity
+    guid: 0f80af7cf2d45e2469d28a0649cbd732
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 3c2074a2d7efebe42b5d58f6a2eacf51, type: 3}

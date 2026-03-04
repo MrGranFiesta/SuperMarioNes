@@ -10,4 +10,5 @@ public static class LayerUtils
     public const string Player = "Player";
     public const string BlockCam = "BlockCam";
     public const string Enemy = "Enemy";
+    public const string Inactive = "Inactive";
 }

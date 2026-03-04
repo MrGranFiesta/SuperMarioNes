@@ -1,10 +1,8 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LaunchCoinAnimation : MonoBehaviour
 {
-    protected float _velocity = 6f;
     protected Vector3 _posInitial;
 
     public void Awake()
@@ -37,11 +35,10 @@ public class LaunchCoinAnimation : MonoBehaviour
 
     private void MoveTowards(Vector3 posTarget)
     {
-        AnimationUtils.MoveTowards(
-            gameObject,
+        transform.position = Vector3.MoveTowards(
             transform.position,
             posTarget,
-            _velocity
+            GameConstants.LaunchCoinAnim * Time.deltaTime
         );
     }
 }

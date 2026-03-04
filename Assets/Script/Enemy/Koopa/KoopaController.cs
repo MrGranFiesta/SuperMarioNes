@@ -13,6 +13,7 @@ public class KoopaController : EnemyBase, IActivable
 
     private LayerMask WalkingMode;
     private LayerMask ShieldMode;
+    private int combo = 1;
 
     protected override void Awake()
     {
@@ -32,9 +33,10 @@ public class KoopaController : EnemyBase, IActivable
         );
         SetLayerMask(WalkingMode);
         _headerController = GetComponentInChildren<KoopaHeaderController>();
-        _headerController.OnChangeStatus.AddListener((newStatus) =>
-            UpdateStatus(newStatus)
-        );
+        _headerController.OnChangeStatus.AddListener((newStatus) => {
+            combo = 1;
+            UpdateStatus(newStatus);
+        });
 
         OnInnative();
         StopMove();
@@ -47,7 +49,7 @@ public class KoopaController : EnemyBase, IActivable
             case KoopaStatus.Walking:
                 _col.size = new Vector2(1, 1.5f);
                 _col.offset = new Vector2(0f, -0.25f);
-                SetSpeed(3f);
+                SetSpeed(GameConstants.MaxVelocityXKoopaWalking);
                 SetLayerMask(WalkingMode);
                 break;
             case KoopaStatus.Shield:
@@ -65,7 +67,7 @@ public class KoopaController : EnemyBase, IActivable
         _col.size = new Vector2(0.9f, 0.8f);
         _col.offset = new Vector2(0f, 0f);
         SetLayerMask(ShieldMode);
-        SetSpeed(6f);
+        SetSpeed(GameConstants.MaxVelocityXKoopaWalking);
     }
 
     protected override void OnCollisionEnter2D(Collision2D collision)
@@ -77,13 +79,21 @@ public class KoopaController : EnemyBase, IActivable
 
         if (TagsUtils.IsPlayerAndNotDamable(collision.gameObject))
         {
+            SoundConst.KickKill.Play();
             OnCollisionEnterPlayer(collision);
         }
 
         if (TagsUtils.IsEnemy(collision.gameObject) && (Status.IsOnlyShield() && isMove) )
         {
+            SoundConst.KickKill.Play();
             Destroy(collision.gameObject);
-            //TODO ANIMACION ROTAR Y CAER
+            int point = PointsUtils.GetPointByCombo(combo);
+            if (point == 0)
+            {
+                MainClass.Player.PlusLive();
+            }
+            MainClass.Player.PlusPoint(point);
+            combo++;
         }
     }
 
@@ -91,7 +101,7 @@ public class KoopaController : EnemyBase, IActivable
     {
         if (Status.IsWalking())
         {
-            Damage();
+            Damage(collision);
         }
         else if (Status.IsShieldNotInvulnerable() && !isMove)
         {
@@ -99,7 +109,7 @@ public class KoopaController : EnemyBase, IActivable
         }
         else if (Status.IsOnlyShield() && isMove)
         {
-            Damage();
+            Damage(collision);
         }
     }
 
@@ -108,7 +118,7 @@ public class KoopaController : EnemyBase, IActivable
         _headerController.CancelTryGetUp(KoopaStatus.ShieldState);
 
         RotationByCollision(collision);
-        SetSpeed(6f);
+        SetSpeed(GameConstants.MaxVelocityXKoopaShield);
         PlayMove();
     }
 

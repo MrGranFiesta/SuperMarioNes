@@ -2,13 +2,22 @@
 
 public class AudioManager
 {
-    private GameObject _go;
+    private GameObject _audioPoolingGO;
+    private GameObject _soundtrackGO;
     public AudioPooling AudioPooling;
+    public SoundtrackManager SoundtrackManager;
 
     public AudioManager()
     {
-        _go = new GameObject("AudioManager");
-        Object.DontDestroyOnLoad(_go);
-        AudioPooling = new AudioPooling(_go);
+        //AudioPooling
+        _audioPoolingGO = new GameObject("AudioPooling");
+        Object.DontDestroyOnLoad(_audioPoolingGO);
+        AudioPooling = new AudioPooling(_audioPoolingGO);
+
+        //SoundtrackManager
+        _soundtrackGO = new GameObject("SoundtrackGO");
+        Object.DontDestroyOnLoad(_soundtrackGO);
+        SoundtrackManager = new SoundtrackManager(_soundtrackGO);
+        SoundtrackManager.Play(SoundtrackConst.MenuSoundtrack.GetClip());
     }
 }

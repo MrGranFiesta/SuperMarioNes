@@ -4,12 +4,14 @@ public class WallBlock : BlockBase
 {
     [SerializeField] private BlockTypeModeWall _mode;
     [SerializeField] private PowerUp _content;
-    private bool _isActived = false;
 
     public override void OnHit()
     {
-        if (_isActived) return;
-        _isActived = true;
+        if (IsDisableOnHit) {
+            SoundConst.Bump.Play();
+            return;
+        }
+        IsDisableOnHit = true;
 
         base.OnHit(_mode != BlockTypeModeWall.Void);
 
@@ -19,13 +21,14 @@ public class WallBlock : BlockBase
             case BlockTypeModeWall.Void:
                 if (MainClass.Player.Status == PlayerStatus.Small) return;
                 MainClass.Player.PlusPoint(PointsUtils.WallBlock);
+                SoundConst.Brick.Play();
                 Destroy(gameObject);
                 break;
             case BlockTypeModeWall.Coin:
                 LaunchCoinAnimation();
                 break;
             case BlockTypeModeWall.PowerUpAuto:
-                GeneratePowerUp(PlayerUtils.GeneratePowerUpByPlayer(MainClass.Player.Status));
+                GeneratePowerUp(PlayerUtils.GeneratePowerUpByPlayer());
                 break;
             case BlockTypeModeWall.PowerUpSpecific:
                 GeneratePowerUp(_content);

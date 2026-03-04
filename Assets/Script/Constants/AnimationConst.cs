@@ -1,7 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class AnimationConst
 {
     //Player
@@ -14,6 +10,7 @@ public class AnimationConst
     public const string OnNotStartedAnimSmall = "OnNotStartedAnimSmall";
     public const string OnNotStartedAnimBig = "OnNotStartedAnimBig";
     public const string OnNotStartedAnimFired = "OnNotStartedAnimFired";
+    public const string OnDeath = "OnDeath";
 
     //Goomba
     public const string IsDeath = "IsDeath";

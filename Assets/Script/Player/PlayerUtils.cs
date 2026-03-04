@@ -1,12 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
 public class PlayerUtils
 {
-    public static PowerUp GeneratePowerUpByPlayer(PlayerStatus status)
+    public static PowerUp GeneratePowerUpByPlayer()
     {
-        switch (status)
+        switch (MainClass.Player.Status)
         {
             case PlayerStatus.Small:
                 return PowerUp.Champinion;

@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.UI.Image;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class AutoMoveStart : MonoBehaviour
@@ -9,8 +6,8 @@ public class AutoMoveStart : MonoBehaviour
     private Rigidbody2D _rig;
     private float _directionX = 1f;
     private float _directionY = 1f;
-    private float _speedX = 2.5f;
-    private float _speedY = 5.5f;
+    private float _speedX = GameConstants.VelocityXAutomoveStart;
+    private float _speedY = GameConstants.VelocityYAutomoveStart;
 
     protected virtual void Awake()
     {

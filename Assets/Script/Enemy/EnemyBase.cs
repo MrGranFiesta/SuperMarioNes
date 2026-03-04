@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Rigidbody2D), typeof(CapsuleCollider2D))]
+[RequireComponent(typeof(Rigidbody2D))]
+[RequireComponent(typeof(CapsuleCollider2D))]
 public class EnemyBase : AutoMove
 {
 
@@ -16,20 +15,19 @@ public class EnemyBase : AutoMove
     protected virtual void OnCollisionEnter2D(Collision2D collision)
     {
         if(TagsUtils.IsPlayerAndNotDamable(collision.gameObject)) {
-            Damage();
+            Damage(collision);
         }
     }
 
-    protected void Damage() {
-        if (MainClass.Player.Status != PlayerStatus.Small)
+    protected void Damage(Collision2D collision) {
+        if (MainClass.Player.Status != PlayerStatus.Small && MainClass.Player.IsDamage())
         {
             MainClass.Player.SetStatusPlayer(PlayerStatus.Small);
             MainClass.Player.SetIsVulnerable(true);
         }
         else
         {
-            MainClass.Player.MinusLive();
-            //TODO Death Player
+            collision.gameObject.GetComponent<PlayerController>()?.DeathPlayer();
         }
     }
 

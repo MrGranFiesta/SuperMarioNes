@@ -7,7 +7,11 @@ public class WallBlockMultiCoin : BlockBase
 
     public override void OnHit()
     {
-        if (_coinCount <= 0) return;
+        if (_coinCount <= 0)
+        {
+            SoundConst.Bump.Play();
+            return;
+        }
         _coinCount--;
         base.OnHit(_coinCount <= 0);
         LaunchCoinAnimation();

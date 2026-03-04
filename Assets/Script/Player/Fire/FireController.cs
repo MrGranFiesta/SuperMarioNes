@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Animator))]
@@ -11,12 +10,12 @@ public class FireController : MonoBehaviour
     private Animator _animator;
     private Rigidbody2D _rig;
     private bool _isMove = true;
-    private float _speedX = 8f;
-    private float _speedY = 3f;
+    private float _speedX = GameConstants.VelocityXFire;
+    private float _speedY = GameConstants.VelocityYFire;
     private float _directionX = 1f;
     private float _directionY = 1f;
-    private float _rayDistanceHeightMax = 1.1f;
-    private float _rayDistanceHeightMin = 0.4f;
+    private float _rayDistanceHeightMax = GameConstants.RayDistanceHeightMaxFire;
+    private float _rayDistanceHeightMin = GameConstants.RayDistanceHeightMinFire;
     private LayerMask _layerMask;
 
     private void Awake()
@@ -107,7 +106,7 @@ public class FireController : MonoBehaviour
         _isMove = false;
         _rig.bodyType = RigidbodyType2D.Static;
         _animator.SetTrigger(AnimationConst.OnExplote);
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(GameConstants.DelayDisableFire);
         gameObject.SetActive(false);
     }
 }
